@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Contact Vehicle Owner</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#ece5dd;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:12px;
+width:90%;
+max-width:420px;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.vehicle{
+color:#666;
+margin-bottom:20px;
+}
+
+.quick-buttons{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-bottom:20px;
+}
+
+.quick-buttons button{
+background:#075e54;
+color:white;
+border:none;
+padding:12px;
+border-radius:8px;
+font-size:15px;
+cursor:pointer;
+}
+
+.quick-buttons button:hover{
+background:#0b7a6c;
+}
+
+.chat-btn{
+background:#25d366;
+color:white;
+border:none;
+padding:14px;
+border-radius:8px;
+font-size:16px;
+cursor:pointer;
+width:100%;
+}
+
+.chat-btn:hover{
+background:#1ebe5d;
+}
+
+.footer{
+margin-top:15px;
+font-size:12px;
+color:#888;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="title">
+🚗 Contact Vehicle Owner
+</div>
+
+<div class="vehicle">
+Vehicle ID: <b>{{vehicle_id}}</b>
+</div>
+
+<div class="quick-buttons">
+
+<form action="/quick_alert" method="post">
+<input type="hidden" name="vehicle" value="{{vehicle_id}}">
+<input type="hidden" name="message" value="🚧 Your car is blocking another vehicle">
+<button type="submit">🚧 Your car is blocking me</button>
+</form>
+
+<form action="/quick_alert" method="post">
+<input type="hidden" name="vehicle" value="{{vehicle_id}}">
+<input type="hidden" name="message" value="⚠️ Accident reported involving your vehicle">
+<button type="submit">⚠️ Accident reported</button>
+</form>
+
+<form action="/quick_alert" method="post">
+<input type="hidden" name="vehicle" value="{{vehicle_id}}">
+<input type="hidden" name="message" value="💡 Your vehicle lights appear to be on">
+<button type="submit">💡 Lights are on</button>
+</form>
+
+<form action="/quick_alert" method="post">
+<input type="hidden" name="vehicle" value="{{vehicle_id}}">
+<input type="hidden" name="message" value="📞 Someone is requesting you to contact them">
+<button type="submit">📞 Request call</button>
+</form>
+
+</div>
+
+<form action="/start_chat" method="post">
+
+<input type="hidden" name="vehicle" value="{{vehicle_id}}">
+
+<button class="chat-btn">
+💬 Start Live Chat
+</button>
+
+</form>
+
+<div class="footer">
+Your identity remains private
+</div>
+
+</div>
+
+</body>
+</html>

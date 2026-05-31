@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vehicle Chat</title>
+
+<script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#ece5dd;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+.header{
+background:#075e54;
+color:white;
+padding:14px;
+text-align:center;
+font-weight:bold;
+}
+
+.chat-container{
+flex:1;
+overflow-y:auto;
+padding:12px;
+}
+
+.message{
+background:white;
+padding:10px 14px;
+border-radius:12px;
+margin:8px 0;
+max-width:70%;
+word-wrap:break-word;
+}
+
+.sent{
+background:#dcf8c6;
+margin-left:auto;
+}
+
+.input-area{
+display:flex;
+align-items:center;
+gap:6px;
+padding:10px;
+background:white;
+}
+
+#msg{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+.send-btn{
+background:#25d366;
+color:white;
+border:none;
+border-radius:50%;
+width:40px;
+height:40px;
+font-size:18px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+🚗 Vehicle {{vehicle}} Chat
+</div>
+
+<div class="chat-container" id="chat">
+
+{% for msg, sender in history %}
+<div class="message">{{msg}}</div>
+{% endfor %}
+
+</div>
+
+<div class="input-area">
+
+<input id="msg" placeholder="Message">
+
+<button class="send-btn" onclick="sendMessage()">➤</button>
+
+</div>
+
+<script>
+
+var socket = io();
+var vehicle = "{{vehicle}}";
+
+socket.emit("join",{vehicle:vehicle});
+
+function sendMessage(){
+
+var input=document.getElementById("msg");
+var message=input.value.trim();
+
+if(message!=""){
+
+socket.emit("message",{
+vehicle:vehicle,
+message:message
+});
+
+addMessage(message,true);
+
+input.value="";
+}
+
+}
+
+socket.on("message",function(data){
+
+if(data.sender!==socket.id){
+addMessage(data.message,false);
+}
+
+});
+
+function addMessage(msg,isMine){
+
+var chat=document.getElementById("chat");
+
+var div=document.createElement("div");
+
+div.classList.add("message");
+
+if(isMine){
+div.classList.add("sent");
+}
+
+div.textContent=msg;
+
+chat.appendChild(div);
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
